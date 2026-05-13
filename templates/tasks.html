@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="mb-4">Tasks</h1>
+<form method="GET" class="row mb-4">
+
+    <div class="col-md-5">
+
+        <input type="text"
+               name="search"
+               placeholder="Search tasks..."
+               class="form-control">
+
+    </div>
+
+    <div class="col-md-4">
+
+        <select name="status"
+                class="form-select">
+
+            <option value="">
+                All Status
+            </option>
+
+            <option value="pending">
+                Pending
+            </option>
+
+            <option value="in_progress">
+                In Progress
+            </option>
+
+            <option value="completed">
+                Completed
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <button type="submit"
+                class="btn btn-dark w-100">
+
+            Search
+
+        </button>
+
+    </div>
+
+</form>
+
+<div class="row">
+
+    {% for task in tasks %}
+
+    <div class="col-md-4">
+
+        <div class="card shadow p-3 mb-4">
+
+            <h3>{{ task.title }}</h3>
+
+            <p>{{ task.description }}</p>
+
+            <form method="POST"
+                  action="/tasks/update/{{ task.id }}/">
+
+                {% csrf_token %}
+
+                <label>
+                    <strong>Status:</strong>
+                </label>
+
+                <select name="status"
+                        class="form-select mb-2">
+
+                    <option value="pending"
+                        {% if task.status == 'pending' %}
+                            selected
+                        {% endif %}
+                    >
+                        Pending
+                    </option>
+
+                    <option value="in_progress"
+                        {% if task.status == 'in_progress' %}
+                            selected
+                        {% endif %}
+                    >
+                        In Progress
+                    </option>
+
+                    <option value="completed"
+                        {% if task.status == 'completed' %}
+                            selected
+                        {% endif %}
+                    >
+                        Completed
+                    </option>
+
+                </select>
+
+                <button type="submit"
+                        class="btn btn-sm btn-dark">
+
+                    Update
+
+                </button>
+
+            </form>
+            {% if request.user.role == 'admin' %}
+
+            <a href="/tasks/edit/{{ task.id }}/"
+            class="btn btn-sm btn-primary mt-2">
+
+                Edit
+
+            </a>
+
+{% endif %}
+            {% if request.user.role == 'admin' %}
+
+            <a href="/tasks/delete/{{ task.id }}/"
+               class="btn btn-sm btn-danger mt-2">
+
+                Delete
+
+            </a>
+
+            {% endif %}
+
+            <p class="mt-3">
+                <strong>Assigned To:</strong>
+                {{ task.assigned_to }}
+            </p>
+
+            <p>
+                <strong>Due Date:</strong>
+                {{ task.due_date }}
+            </p>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

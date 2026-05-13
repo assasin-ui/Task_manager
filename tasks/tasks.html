@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="mb-4">Tasks</h1>
+
+<div class="row">
+
+    {% for task in tasks %}
+
+    <div class="col-md-4">
+
+        <div class="card shadow p-3 mb-4">
+
+            <h3>{{ task.title }}</h3>
+
+            <p>{{ task.description }}</p>
+
+            <p>
+                <strong>Status:</strong>
+
+                {% if task.status == 'completed' %}
+
+                    <span class="badge bg-success">
+                        Completed
+                    </span>
+
+                {% elif task.status == 'in_progress' %}
+
+                    <span class="badge bg-warning text-dark">
+                        In Progress
+                    </span>
+
+                {% else %}
+
+                    <span class="badge bg-secondary">
+                        Pending
+                    </span>
+
+                {% endif %}
+            </p>
+
+            <p>
+                <strong>Assigned To:</strong>
+                {{ task.assigned_to }}
+            </p>
+
+            <p>
+                <strong>Due Date:</strong>
+                {{ task.due_date }}
+            </p>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

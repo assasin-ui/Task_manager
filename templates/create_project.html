@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="mb-4">Create Project</h1>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Project Title
+        </label>
+
+        <input type="text"
+               name="title"
+               class="form-control"
+               required>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Description
+        </label>
+
+        <textarea name="description"
+                  class="form-control"
+                  rows="4"
+                  required></textarea>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">
+            Team Members
+        </label>
+
+        <select name="team_members"
+                class="form-select"
+                multiple>
+
+            {% for user in users %}
+
+                <option value="{{ user.id }}">
+                    {{ user.username }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <small class="text-muted">
+            Hold CTRL (Windows) or CMD (Mac)
+            to select multiple users.
+        </small>
+
+    </div>
+
+    <button type="submit"
+            class="btn btn-dark">
+
+        Create Project
+
+    </button>
+
+</form>
+
+{% endblock %}
